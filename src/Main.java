@@ -1,10 +1,4 @@
-import com.google.gson.Gson;
-
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.Scanner;
 
 public class Main {
@@ -12,31 +6,103 @@ public class Main {
         Scanner leitura = new Scanner(System.in);
         double valor = 0;
         int escolha = 0;
-        String moeda;
+        String moedaBase;
+        String moedaAlvo;
 
-        System.out.println("Digite a moeda que deseja consultar");
-        moeda = leitura.nextLine();
+        String menu = """
+                Seja Bem Vindo ao conversor de Moedas!!
+                
+                Escolha a opção desejada:
+                
+                1 - Dolar Americano >>> Real Brasileiro
+                2 - Real Brasileiro >>> Dolar Americano
+                3 - Dolar Americano >>> Peso Argentino
+                4 - Peso Argentino >>> Dolar Americano
+                5 - Real Brasileiro >>> Guarani Paraguai
+                6 - Guarani Paraguai >>> Real Brasileiro
+                7 - Outras cotações
+                8 - Ver lista de Códigos de Moedas
+                9 - Sair
+                """;
 
-        //ConsultarMoeda consulta = new ConsultarMoeda();
-        //Moeda novaMoeda = consulta.consultaMoeda(moeda);
-        //System.out.println(novaMoeda);
+        while (escolha != 9) {
+            System.out.println(menu);
+            escolha = leitura.nextInt();
 
-        // Gerador da URL
-        URI endereco = URI.create("https://v6.exchangerate-api.com/v6/ed302789f43692ef78baf497/latest/"+moeda);
+            ConsultarMoeda consulta = new ConsultarMoeda();
+            Moeda novaMoeda;
 
-        // Bloco Request
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(endereco)
-                .build();
-        //try {
+            switch (escolha){
+                case 1: // 1 - Dolar Americano >>> Real Brasileiro
+                    moedaBase = "USD";
+                    moedaAlvo = "BRL";
+                    System.out.println("Digite o valor que deseja consultar");
+                    valor = leitura.nextDouble();
+                    novaMoeda = consulta.consultaMoeda(moedaBase, moedaAlvo, valor);
+                    System.out.println(novaMoeda);
+                    break;
 
-        // Bloco Response
-        HttpResponse<String> response = client
-                .send(request, HttpResponse.BodyHandlers.ofString());
-        String retornoCotacao = response.body();
-        Gson cotacaoGson = new Gson();
-        Moeda novaMoeda = cotacaoGson.fromJson(retornoCotacao, Moeda.class);
-        System.out.println(novaMoeda);
+                case 2: // 2 - Real Brasileiro >>> Dolar Americano
+                    moedaBase = "BRL";
+                    moedaAlvo = "USD";
+                    System.out.println("Digite o valor que deseja consultar");
+                    valor = leitura.nextDouble();
+                    novaMoeda = consulta.consultaMoeda(moedaBase, moedaAlvo, valor);
+                    System.out.println(novaMoeda);
+                    break;
+
+                case 3: // 3 - Dolar Americano >>> Peso Argentino
+                    moedaBase = "USD";
+                    moedaAlvo = "ARS";
+                    System.out.println("Digite o valor que deseja consultar");
+                    valor = leitura.nextDouble();
+                    novaMoeda = consulta.consultaMoeda(moedaBase, moedaAlvo, valor);
+                    System.out.println(novaMoeda);
+                    break;
+
+                case 4: // 4 - Peso Argentino >>> Dolar Americano
+                    moedaBase = "ARS";
+                    moedaAlvo = "USD";
+                    System.out.println("Digite o valor que deseja consultar");
+                    valor = leitura.nextDouble();
+                    novaMoeda = consulta.consultaMoeda(moedaBase, moedaAlvo, valor);
+                    System.out.println(novaMoeda);
+                    break;
+                case 5: // 5 - Real Brasileiro >>> Guarani Paraguai
+                    moedaBase = "BRL";
+                    moedaAlvo = "PYG";
+                    System.out.println("Digite o valor que deseja consultar");
+                    valor = leitura.nextDouble();
+                    novaMoeda = consulta.consultaMoeda(moedaBase, moedaAlvo, valor);
+                    System.out.println(novaMoeda);
+                    break;
+                case 6: // 6 - Guarani Paraguai >>> Real Brasileiro
+                    moedaBase = "PYG";
+                    moedaAlvo = "BRL";
+                    System.out.println("Digite o valor que deseja consultar");
+                    valor = leitura.nextDouble();
+                    novaMoeda = consulta.consultaMoeda(moedaBase, moedaAlvo, valor);
+                    System.out.println(novaMoeda);
+                    break;
+                case 7: // 7 - Outras cotações
+                    System.out.println("Digite a moeda Base");
+                    moedaBase = leitura.next();
+                    System.out.println("Digite a moeda Alvo");
+                    moedaAlvo = leitura.next();
+                    System.out.println("Digite o valor que deseja consultar");
+                    valor = leitura.nextDouble();
+                    novaMoeda = consulta.consultaMoeda(moedaBase, moedaAlvo, valor);
+                    System.out.println(novaMoeda);
+                    break;
+                case 8: // 8 - Ver lista de Códigos de Moedas
+                    System.out.println(consulta.consultaCodigos());
+                    break;
+            }
+
+
+
+        }
+
+
     }
 }
